@@ -2,7 +2,7 @@
 // Name        : VectorSorting.cpp
 // Author      : Damien Quayle
 // Version     : 1.0
-// Copyright   : Copyright © 2017 SNHU COCE
+// Copyright   : Copyright Â© 2017 SNHU COCE
 // Description : Vector Sorting Algorithms
 //============================================================================
 
@@ -158,65 +158,6 @@ int partition(vector<Bid>& bids, int begin, int end) {
     return high;
 }
 
-int partitionAmount(vector<Bid>& bids, int begin, int end) {
-    int pivotIndex = begin;
-    int pivotValue = bids.at(begin).amount;
-
-    // pick the middle element as the partition point
-    int pivot = begin + (end - begin) / 2;
-
-    swap(bids.at(begin), bids.at(pivot));
-
-    for (int scan = begin + 1; scan <= end; scan++) {
-        if (bids.at(scan).amount < pivotValue) {
-            pivotIndex++;
-            swap(bids.at(pivotIndex), bids.at(scan));
-        }
-    }
-
-    swap(bids.at(begin), bids.at(pivotIndex));
-
-
-
-    return pivotIndex;
-}
-
-int partitionFund(vector<Bid>& bids, int begin, int end) {
-    int low = begin;
-    int high = end;
-
-    // pick the middle element as the partition point
-    int pivot = begin + (end - begin) / 2;
-
-    bool done = false;
-
-    while (!done) {
-        // keep invrementing low as long as it's less than the pivot point
-        while (bids.at(low).fund.compare(bids.at(pivot).fund) < 0) {
-            ++low;
-        }
-
-        // keep decrementing high as long as it's less than the pivot point
-        while (bids.at(pivot).fund.compare(bids.at(high).fund) < 0) {
-            --high;
-        }
-
-        if (low >= high) {
-            done = true;
-        }
-
-        else {
-            //swap the low and high bids using vector swap
-            swap(bids.at(low), bids.at(high));
-
-            // move end points closer
-            ++low;
-            --high;
-        }
-    }
-
-    return high;
-}
 
 /**
  * Perform a quick sort on bid title
@@ -244,38 +185,6 @@ void quickSort(vector<Bid>& bids, int begin, int end) {
     quickSort(bids, mid + 1, end);
 
 }
-
-void quickSortAmount(vector<Bid>& bids, int begin, int end) {
-    int pivotPoint;
-    
-    if (begin < end) {
-        pivotPoint = partitionAmount(bids, begin, end);
-
-        // recursively call quickSort using midpoint value (lower end)
-        quickSortAmount(bids, begin, pivotPoint);
-        // recursively call quickSort using midpoint value (higher end)
-        quickSortAmount(bids, pivotPoint + 1, end);
-    }
-}
-
-void quickSortFund(vector<Bid>& bids, int begin, int end) {
-    int mid = 0;
-
-    // If zero or one bids to sort, then done
-    if (begin >= end) {
-        return;
-    }
-
-    // partition bids into low and high parts
-    mid = partitionFund(bids, begin, end);
-
-    // recursively call quickSort using midpoint value (lower end)
-    quickSortFund(bids, begin, mid);
-    // recursively call quickSort using midpoint value (higher end)
-    quickSortFund(bids, mid + 1, end);
-
-}
-
 
 // Implement the selection sort logic over bid.title
 
@@ -347,8 +256,6 @@ int main(int argc, char* argv[]) {
         cout << "  2. Display All Bids" << endl;
         cout << "  3. Selection Sort All Bids" << endl;
         cout << "  4. Quick Sort All Bids By Title" << endl;
-        cout << "  5. Quick Sort All Bids By Amount" << endl;
-        cout << "  6. Quick Sort All Bids By Fund" << endl;
         cout << "  9. Exit" << endl;
         cout << "Enter choice: ";
         cin >> choice;
@@ -405,40 +312,6 @@ int main(int argc, char* argv[]) {
 
             // Complete the method call to load the bids
             quickSort(bids, 0, bids.size() - 1);
-
-            cout << bids.size() << " bids read" << endl;
-
-            // Calculate elapsed time and display result
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
-
-            break;
-
-        case 5: 
-
-            // Initialize a timer variable before loading bids
-            ticks = clock();
-
-            // Complete the method call to load the bids
-            quickSortAmount(bids, 0, bids.size() - 1);
-
-            cout << bids.size() << " bids read" << endl;
-
-            // Calculate elapsed time and display result
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
-
-            break;
-
-        case 6:
-
-            // Initialize a timer variable before loading bids
-            ticks = clock();
-
-            // Complete the method call to load the bids
-            quickSortFund(bids, 0, bids.size() - 1);
 
             cout << bids.size() << " bids read" << endl;
 
